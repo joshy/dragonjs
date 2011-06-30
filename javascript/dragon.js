@@ -10,14 +10,14 @@ window.onload = function() {
 
 function resetPaper() {
     path_size = parseInt($('#size').val());
-    var width = 840;
-    var height = 840;
+    var width = 800;
+    var height = 400;
     x0 = width / 2;
     y0 = height / 2;
     x1 = x0;
     y1 = y0 - path_size;
     $('#holder').empty();
-    r = Raphael("holder", 840, 840);
+    r = Raphael("holder", width, height);
     turn = new Turn();
     orientation = 'N';
 }

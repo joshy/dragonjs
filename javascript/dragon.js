@@ -61,19 +61,13 @@ function Turn() {
 	    }
 	    return;
 	}
-
-    }
+    };
 }
 
 
 function dragon(code) {
     if (code == 0) {
-	ctx.beginPath();
-	ctx.moveTo(x0, y0);
-	ctx.lineTo(x1,y1);
-	ctx.closePath();
-	ctx.stroke();
-//	r.path("M " + x0 + " " + y0 + "L" + x1 + " " + y1).attr({stroke:"blue"});
+	draw_path();
     } else {
 	dragon(code-1);
 	turn.turn('right');
@@ -83,15 +77,18 @@ function dragon(code) {
 
 function dragon_inverse(code) {
     if (code == 0) {
-	ctx.beginPath();
-	ctx.moveTo(x0, y0);
-	ctx.lineTo(x1,y1);
-	ctx.closePath();
-	ctx.stroke();
-//	r.path("M " + x0 + " " + y0 + "L" + x1 + " " + y1).attr({stroke:"blue"});
+	draw_path();
     } else {
 	dragon(code-1);
 	turn.turn('left');
 	dragon_inverse(code-1);
     }
+}
+
+function draw_path() {
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1,y1);
+    ctx.closePath();
+    ctx.stroke();
 }

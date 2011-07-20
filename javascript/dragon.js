@@ -8,7 +8,7 @@ window.onload = function() {
 };
 
 function resetPaper() {
-    canvas = document.getElementById('board');
+    var canvas = document.getElementById('board');
     ctx = canvas.getContext('2d');
     ctx.strokeStyle = "blue";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -19,50 +19,49 @@ function resetPaper() {
     y0 = height / 2;
     x1 = x0;
     y1 = y0 - path_size;
-    turn = new Turn();
-    orientation = 'N';
 }
 
 
-function Turn() {
-    this.index = 0;
-    this.turn = function(direction) {
+var Turn =  {
+    orientation: 'N',
+    turn: function(direction) {
 	x0 = x1;
 	y0 = y1;
 	if (direction == 'right') {
-	    if (orientation == 'N') {
-		orientation = 'O';
+	    if (this.orientation == 'N') {
+		this.orientation = 'O';
 		x1 = x1 + path_size;
-	    } else if (orientation == 'O') {
-		orientation = 'S';
+	    } else if (this.orientation == 'O') {
+		this.orientation = 'S';
 		y1 = y1 + path_size;
-	    } else if (orientation == 'S') {
-		orientation = 'W';
+	    } else if (this.orientation == 'S') {
+		this.orientation = 'W';
 		x1 = x1 - path_size;
-	    } else if (orientation == 'W') {
-		orientation = 'N';
+	    } else if (this.orientation == 'W') {
+		this.orientation = 'N';
 		y1 = y1 - path_size;
 	    }
 	    return;
 	}
 	if (direction == 'left') {
-	    if (orientation == 'N') {
-		orientation = 'W';
+	    if (this.orientation == 'N') {
+		this.orientation = 'W';
 		x1 = x1 - path_size;
-	    } else if (orientation == 'W') {
-		orientation = 'S';
+	    } else if (this.orientation == 'W') {
+		this.orientation = 'S';
 		y1 = y1 + path_size;
-	    } else if (orientation == 'S') {
-		orientation = 'O';
+	    } else if (this.orientation == 'S') {
+		this.orientation = 'O';
 		x1 = x1 + path_size;
-	    } else if (orientation == 'O') {
-		orientation = 'N';
+	    } else if (this.orientation == 'O') {
+		this.orientation = 'N';
 		y1 = y1 - path_size;
 	    }
 	    return;
 	}
-    };
-}
+    }
+};
+
 
 
 function dragon(code) {
@@ -70,7 +69,7 @@ function dragon(code) {
 	draw_path();
     } else {
 	dragon(code-1);
-	turn.turn('right');
+	Turn.turn('right');
 	dragon_inverse(code-1);
     }
 }
@@ -80,7 +79,7 @@ function dragon_inverse(code) {
 	draw_path();
     } else {
 	dragon(code-1);
-	turn.turn('left');
+	Turn.turn('left');
 	dragon_inverse(code-1);
     }
 }

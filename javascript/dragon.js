@@ -23,39 +23,47 @@ function resetPaper() {
 
 
 var Turn =  {
-    orientation: 'N',
+    orientation: 'n',
+    go_east: function() {
+	this.orientation = 'o';
+	x1 += path_size;
+    },
+    go_south: function() {
+	this.orientation = 's';
+	y1 += path_size;
+    },
+    go_north: function() {
+	this.orientation = 'n';
+	y1 -= path_size;
+    },
+    go_west: function() {
+	this.orientation = 'w';
+	x1 -= path_size;
+    },
     turn: function(direction) {
 	x0 = x1;
 	y0 = y1;
 	if (direction == 'right') {
-	    if (this.orientation == 'N') {
-		this.orientation = 'O';
-		x1 = x1 + path_size;
-	    } else if (this.orientation == 'O') {
-		this.orientation = 'S';
-		y1 = y1 + path_size;
-	    } else if (this.orientation == 'S') {
-		this.orientation = 'W';
-		x1 = x1 - path_size;
-	    } else if (this.orientation == 'W') {
-		this.orientation = 'N';
-		y1 = y1 - path_size;
+	    if (this.orientation == 'n') {
+		this.go_east();
+	    } else if (this.orientation == 'o') {
+		this.go_south();
+	    } else if (this.orientation == 's') {
+		this.go_west();
+	    } else if (this.orientation == 'w') {
+		this.go_north();
 	    }
 	    return;
 	}
 	if (direction == 'left') {
-	    if (this.orientation == 'N') {
-		this.orientation = 'W';
-		x1 = x1 - path_size;
-	    } else if (this.orientation == 'W') {
-		this.orientation = 'S';
-		y1 = y1 + path_size;
-	    } else if (this.orientation == 'S') {
-		this.orientation = 'O';
-		x1 = x1 + path_size;
-	    } else if (this.orientation == 'O') {
-		this.orientation = 'N';
-		y1 = y1 - path_size;
+	    if (this.orientation == 'n') {
+		this.go_west();
+	    } else if (this.orientation == 'w') {
+		this.go_south();
+	    } else if (this.orientation == 's') {
+		this.go_east();
+	    } else if (this.orientation == 'o') {
+		this.go_north();
 	    }
 	    return;
 	}

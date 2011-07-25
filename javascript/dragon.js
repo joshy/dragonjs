@@ -23,53 +23,31 @@ function resetPaper() {
 
 
 var Turn =  {
-    orientation: 'n',
-    go_east: function() {
-	this.orientation = 'o';
-	x1 += path_size;
-    },
-    go_south: function() {
-	this.orientation = 's';
-	y1 += path_size;
-    },
-    go_north: function() {
-	this.orientation = 'n';
-	y1 -= path_size;
-    },
-    go_west: function() {
-	this.orientation = 'w';
-	x1 -= path_size;
-    },
-    turn: function(direction) {
+    look: 0,
+    kompass: new Array(function() {
+			   y1 -= path_size;
+		       },function() {
+			   x1 += path_size;
+		       }, function() {
+			   y1 += path_size;
+		       }, function() {
+			   x1 -= path_size;
+		       }),
+    turn_right: function() {
 	x0 = x1;
 	y0 = y1;
-	if (direction == 'right') {
-	    if (this.orientation == 'n') {
-		this.go_east();
-	    } else if (this.orientation == 'o') {
-		this.go_south();
-	    } else if (this.orientation == 's') {
-		this.go_west();
-	    } else if (this.orientation == 'w') {
-		this.go_north();
-	    }
-	    return;
-	}
-	if (direction == 'left') {
-	    if (this.orientation == 'n') {
-		this.go_west();
-	    } else if (this.orientation == 'w') {
-		this.go_south();
-	    } else if (this.orientation == 's') {
-		this.go_east();
-	    } else if (this.orientation == 'o') {
-		this.go_north();
-	    }
-	    return;
-	}
+	this.look += 1;
+	if (this.look == 4) this.look = 0;
+	this.kompass[this.look]();
+    },
+    turn_left: function() {
+	x0 = x1;
+	y0 = y1;
+	this.look -= 1;
+	if (this.look == -1) this.look = 3;
+	this.kompass[this.look]();
     }
 };
-
 
 
 function dragon(code) {
@@ -77,7 +55,7 @@ function dragon(code) {
 	draw_path();
     } else {
 	dragon(code-1);
-	Turn.turn('right');
+	Turn.turn_right();
 	dragon_inverse(code-1);
     }
 }
@@ -87,7 +65,7 @@ function dragon_inverse(code) {
 	draw_path();
     } else {
 	dragon(code-1);
-	Turn.turn('left');
+	Turn.turn_left();
 	dragon_inverse(code-1);
     }
 }

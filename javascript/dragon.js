@@ -1,10 +1,10 @@
 window.onload = function() {
-  $("#draw").click(
-    function() {
-      var it = $('#it').val();
-      resetPaper();
-      dragon(parseInt(it));
-   }); 
+    $("#draw").click(
+	function() {
+	    var it = $('#it').val();
+	    resetPaper();
+	    dragon(parseInt(it));
+	}); 
 };
 
 function resetPaper() {
@@ -15,44 +15,50 @@ function resetPaper() {
     path_size = parseInt($('#size').val());
     var width = 800;
     var height = 400;
-    x0 = width / 2;
-    y0 = height / 2;
-    x1 = x0;
-    y1 = y0 - path_size;
 }
 
 
 var Turn =  {
-    look: 0,
-    kompass: new Array(function() {
-			   y1 -= path_size;
-		       },function() {
-			   x1 += path_size;
-		       }, function() {
-			   y1 += path_size;
-		       }, function() {
-			   x1 -= path_size;
-		       }),
+    x0: 400, y0: 200, x1: 400, y1: 195, 
+    look: 0, // current index of kompass array
+    kompass: [function(o) {
+		  o.y1 -= path_size;
+	      },function(o) {
+		  o.x1 += path_size;
+	      }, function(o) {
+		  o.y1 += path_size;
+	      }, function(o) {
+		  o.x1 -= path_size;
+	      }],
+    save: function() {
+	this.x0 = this.x1;
+	this.y0 = this.y1;	
+    },
     turn_right: function() {
-	x0 = x1;
-	y0 = y1;
 	this.look += 1;
 	if (this.look == 4) this.look = 0;
-	this.kompass[this.look]();
+	this.save();	
+	this.kompass[this.look](this);
     },
     turn_left: function() {
-	x0 = x1;
-	y0 = y1;
 	this.look -= 1;
 	if (this.look == -1) this.look = 3;
-	this.kompass[this.look]();
+	this.save();
+	this.kompass[this.look](this);
+    },
+    draw_path: function() {
+	ctx.beginPath();
+	ctx.moveTo(this.x0, this.y0);
+	ctx.lineTo(this.x1,this.y1);
+	ctx.closePath();
+	ctx.stroke();
     }
 };
 
 
 function dragon(code) {
     if (code == 0) {
-	draw_path();
+	Turn.draw_path();
     } else {
 	dragon(code-1);
 	Turn.turn_right();
@@ -62,18 +68,10 @@ function dragon(code) {
 
 function dragon_inverse(code) {
     if (code == 0) {
-	draw_path();
+	Turn.draw_path();
     } else {
 	dragon(code-1);
 	Turn.turn_left();
 	dragon_inverse(code-1);
     }
-}
-
-function draw_path() {
-    ctx.beginPath();
-    ctx.moveTo(x0, y0);
-    ctx.lineTo(x1,y1);
-    ctx.closePath();
-    ctx.stroke();
 }
